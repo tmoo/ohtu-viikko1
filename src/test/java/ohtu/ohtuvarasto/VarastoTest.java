@@ -64,5 +64,78 @@ public class VarastoTest {
         // varastossa pitäisi olla tilaa 10 - 8 + 2 eli 4
         assertEquals(4, varasto.paljonkoMahtuu(), vertailuTarkkuus);
     }
+    
+    @Test
+    public void negatiivisenLisaysEiTeeMitaan() {
+        varasto.lisaaVarastoon(-5);
+        assertEquals(0, varasto.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void yliMenevaLisaysTayttaaVaraston() {
+        varasto.lisaaVarastoon(15);
+        assertEquals(10, varasto.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void negatiivinenTilavuusNollaantuu() {
+        Varasto uusiVarasto = new Varasto(-43);
+        assertEquals(0, uusiVarasto.getTilavuus(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void toinenKonstruktoriLuoOikeanTilavuuden() {
+        Varasto toinenVarasto = new Varasto(9, 5);
+        assertEquals(9, toinenVarasto.getTilavuus(), vertailuTarkkuus);
+    }
+    
+    @Test public void negatiivinenTilavuusNollaantuuToisellaKonstruktorilla() {
+        Varasto toinenVarasto = new Varasto(-9, 5);
+        assertEquals(0, toinenVarasto.getTilavuus(), vertailuTarkkuus);
+    }
 
+    @Test
+    public void positiivinenAlkuSaldoToimiiToisellaKonstruktorilla() {
+        Varasto toinenVarasto = new Varasto(9, 5);
+        assertEquals(5, toinenVarasto.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void yliMenevaAlkuSaldoTayttaaVarastonToisellaKonstruktorilla() {
+        Varasto toinenVarasto = new Varasto(9, 15);
+        assertEquals(9, toinenVarasto.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void negatiivinenAlkuSaldoNollaantuuToisellaKonstruktorilla() {
+        Varasto toinenVarasto = new Varasto(9, -5);
+        assertEquals(0, toinenVarasto.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void negatiivisenOttaminenPalauttaaNollan() {
+        double palautus = varasto.otaVarastosta(-5);
+        assertEquals(0, palautus, vertailuTarkkuus);
+    }
+    
+    @Test
+    public void yliMenevanOttaminenPalauttaaKokoSaldon() {
+        varasto.lisaaVarastoon(5);
+        double palautus = varasto.otaVarastosta(999);
+        assertEquals(5, palautus, vertailuTarkkuus);
+    }
+    
+    @Test
+    public void yliMenevanOttaminenTyhjentaaSaldon() {
+        varasto.lisaaVarastoon(5);
+        varasto.otaVarastosta(999);
+        assertEquals(0, varasto.getSaldo(), vertailuTarkkuus);
+    }
+    
+    @Test
+    public void toStringToimii() {
+        String mjono = varasto.toString();
+        assertEquals("saldo = 0.0, vielä tilaa 10.0", mjono);
+    }
 }
+   
